@@ -43,13 +43,10 @@ def get_dealers_from_cf(url, **kwargs):
             results.append(dealer_obj)
     return results
 
-# Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-# def get_dealer_by_id_from_cf(url, dealerId):
-# - Call get_request() with specified arguments
-# - Parse JSON results into a DealerView object list
-def get_dealer_by_id_from_cf(url, dealerId):
+#get_dealer_by_state
+def get_dealer_by_state_from_cf(url, state):
     results = []
-    json_result = get_request(url, dealerId=dealerId)
+    json_result = get_request(url, state=state)
     if json_result:
         dealers = json_result["result"]
         for dealer in dealers:
@@ -63,6 +60,27 @@ def get_dealer_by_id_from_cf(url, dealerId):
                                    zip=dealer_doc["zip"])
             results.append(dealer_obj)
     return results
+
+# Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
+# def get_dealer_by_id_from_cf(url, dealerId):
+# - Call get_request() with specified arguments
+# - Parse JSON results into a DealerView object list
+def get_dealer_reviews_from_cf(url, dealerId):
+    result = []
+    json_result = get_request(url, dealerId)
+    if json_result:
+        reviews = json_result["body"]["data"]
+        for review in reviews:
+            review_doc = review["docs"]
+            review_obj = DealerReview(
+                dealership = review_doc["dealership"],
+                name = review_doc["name"],
+                purchase = review_doc["purchase"],
+                review = review_doc["review"],
+                purchase_date = review_doc["purchase_date"],
+            )
+            result.append(review_obj)
+    return result
 
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text

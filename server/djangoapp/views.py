@@ -87,9 +87,23 @@ def get_dealerships(request):
         return HttpResponse(dealer_names)
 
 
+def get_dealerships_by_state(request, state):
+    context = {}
+    if request.method == "GET":
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/get-dealership.json"
+        dealerships = get_dealer_by_state_from_cf(url, state)
+        dealer_names = ''.join([(dealer.short_name) for dealer in dealerships])
+        return HttpResponse(dealer_names)
+
+
 # Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
+def get_dealer_details(request, dealer_id):
+    context = {}
+    if request.method == "GET":
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/get-review"
+        reviews = get_dealer_reviews_from_cf(url, dealer_id)
+        dealer_reviews = ''.join([(review.review) for review in reviews])
+        return HttpResponse(dealer_reviews)
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
