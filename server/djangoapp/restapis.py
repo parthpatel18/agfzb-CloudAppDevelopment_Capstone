@@ -1,6 +1,6 @@
 import requests
 import json
-from .models import CarDealer
+from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
 
 # Create a `get_request` to make HTTP GET requests
@@ -65,19 +65,24 @@ def get_dealer_by_state_from_cf(url, state):
 # def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
-def get_dealer_reviews_from_cf(url, dealerId):
+def get_dealer_reviews_from_cf(url, dealer_Id):
     result = []
-    json_result = get_request(url, dealerId)
+    json_result = get_request(url, dealerId=dealer_Id)
     if json_result:
-        reviews = json_result["body"]["data"]
-        for review in reviews:
-            review_doc = review["docs"]
+        reviews = json_result["data"]["docs"]
+        for review_doc in reviews:
+            #review_doc = review["docs"]
             review_obj = DealerReview(
                 dealership = review_doc["dealership"],
                 name = review_doc["name"],
                 purchase = review_doc["purchase"],
                 review = review_doc["review"],
-                purchase_date = review_doc["purchase_date"],
+                purchase_date = review_doc.get("purchase_date"),
+                car_make = review_doc.get("car_make"),
+                car_model = review_doc.get("car_model"),
+                car_year = review_doc.get("car_year"),
+                sentiment = "null",
+                review_id = review_doc.get("id")
             )
             result.append(review_obj)
     return result
@@ -87,6 +92,4 @@ def get_dealer_reviews_from_cf(url, dealerId):
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
-
-
 
