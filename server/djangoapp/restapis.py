@@ -6,11 +6,11 @@ from requests.auth import HTTPBasicAuth
 # Create a `get_request` to make HTTP GET requests
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
 #                                     auth=HTTPBasicAuth('apikey', api_key))
-def get_request(url, **kwargs):
+def get_request(url, api_key=None, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
     try:
-        if api_key:
+        if api_key is not None:
             response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs, auth=HTTPBasicAuth('apikey', api_key))
         else:
             response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs)
@@ -96,11 +96,12 @@ def get_dealer_reviews_from_cf(url, dealer_Id):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
 def analyze_review_sentiments(dealerreview):
-    json_result = get_request('https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/e983e9dd-40c9-4248-a519-ebc70870fa53',
-                            api_key = 'xrOonz8SkQ-JLTtKX1HcipZUABepYMbsG2gTDuHwYRzg',
+    json_result = get_request("https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/e983e9dd-40c9-4248-a519-ebc70870fa53",
+                            api_key = "080PM4gjE02s9RfY7BrRlWf_gK2p6LgiJIhlcZqW6WE0",
                             text = dealerreview, features = 'sentiment',
                             return_analyzed_text = False, version = '2022-08-10')
     sentiment = 'unknown'
+    print(json_result)
     sentiment_response = json_result.get("sentiment")
     if sentiment_response:
         sentiment = sentiment_response['document']['label']
