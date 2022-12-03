@@ -10,7 +10,10 @@ def get_request(url, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
     try:
-        response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs)
+        if api_key:
+            response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs, auth=HTTPBasicAuth('apikey', api_key))
+        else:
+            response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs)
     except:
         print("Network exception occured")
     status_code = response.status_code
@@ -81,7 +84,7 @@ def get_dealer_reviews_from_cf(url, dealer_Id):
                 car_make = review_doc.get("car_make"),
                 car_model = review_doc.get("car_model"),
                 car_year = review_doc.get("car_year"),
-                sentiment = "null",
+                sentiment = analyze_review_sentiments(review_doc["review"]),
                 review_id = review_doc.get("id")
             )
             result.append(review_obj)
@@ -92,4 +95,13 @@ def get_dealer_reviews_from_cf(url, dealer_Id):
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
-
+def analyze_review_sentiments(dealerreview):
+    json_result = get_request('https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/e983e9dd-40c9-4248-a519-ebc70870fa53',
+                            api_key = 'xrOonz8SkQ-JLTtKX1HcipZUABepYMbsG2gTDuHwYRzg',
+                            text = dealerreview, features = 'sentiment',
+                            return_analyzed_text = False, version = '2022-08-10')
+    sentiment = 'unknown'
+    sentiment_response = json_result.get("sentiment")
+    if sentiment_response:
+        sentiment = sentiment_response['document']['label']
+    return sentiment
