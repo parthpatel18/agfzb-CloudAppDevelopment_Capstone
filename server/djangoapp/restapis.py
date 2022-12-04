@@ -23,7 +23,17 @@ def get_request(url, api_key=None, **kwargs):
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
-
+def post_request(url, json_payload, **kwargs):
+    print(kwargs)
+    print("POST from {} ".format(url))
+    try:
+        response = requests.post(url, params=kwargs, json=json_payload)
+    except:
+        print("Network exception occured")
+    status_code = response.status_code
+    print("With status {} ".format(status_code))
+    json_data = json.loads(response.text)
+    return json_data
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 # def get_dealers_from_cf(url, **kwargs):
@@ -63,6 +73,21 @@ def get_dealer_by_state_from_cf(url, state):
                                    zip=dealer_doc["zip"])
             results.append(dealer_obj)
     return results
+
+def get_dealer_by_id(url, dealer_id):
+    dealer_obj = None
+    # Call get_request with a URL parameter
+    json_result = get_request(url, dealerId=dealer_id)
+    if json_result:
+        if json_result["statusCode"] == 404:
+            return dealer_obj
+        dealer_doc = json_result["body"]
+        # For each dealer object
+        dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
+                                id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
+                                short_name=dealer_doc["short_name"],
+                                st=dealer_doc["st"], state=dealer_doc["state"], zip=dealer_doc["zip"])
+    return dealer_obj
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 # def get_dealer_by_id_from_cf(url, dealerId):
