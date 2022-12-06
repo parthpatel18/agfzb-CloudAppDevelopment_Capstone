@@ -10,9 +10,46 @@
     <body>
 
     <!--Add a nav bar here -->
+    {% include 'djangoapp/nav_bar.html' with active_menu='' %}
 
     <!-- Add reviews as cards -->
+        <div class="container text-center">
+            <h1 class='display-3 my-3 px-5'><b>{{ dealer.full_name }}</b></h1>
+            <h5 class='px-5'>{{ dealer.address }}, {{ dealer.zip }}</h5>
+            <h5 class='px-5'>{{ dealer.city }} - {{ dealer.st }}</h5>
+            
+            <h2 class='my-4 px-5'>Reviews for {{ dealer.short_name }}</h2>
+            {% if user.is_authenticated %}
+            <h5 class='mb-4 px-5'><a href="{% url 'djangoapp:add_review' dealer.id %}">Add Review</a></h5>
+            {% endif %}
 
+            <div class="card-columns">
+                {% for review in reviews_list %}
+                    <div class="card">
+                        {% if review.sentiment == 'positive' %}
+                            <img class="card-img-left my-3" style="width: 80px; height: 80px;" src="{{MEDIA_URL}}/emoji/positive.png">
+                        {% elif review.sentiment == 'negative' %}
+                            <img class="card-img-left my-3" style="width: 80px; height: 80px;" src="{{MEDIA_URL}}/emoji/negative.png">
+                        {% else %}
+                            <img class="card-img-left my-3" style="width: 80px; height: 80px;" src="{{MEDIA_URL}}/emoji/neutral.png">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {% if review.purchase == True %}
+                                    {{review.car_make}}, {{review.car_model}}<br>
+                                    {{review.car_year}}
+                                {% else %}
+                                    No purchase
+                                {% endif %}
+                            </h5>
+                            <p class="card-text mb-3">
+                                {{ review.review}}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </body>
 
 </html>
