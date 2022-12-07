@@ -141,7 +141,6 @@ def add_review(request, dealer_id):
                 'purchase': purchase
             }
 
-
             if review['purchase']:
                 car = CarModel.objects.get(id=int(request.POST['car']))
                 review.update({
@@ -155,6 +154,5 @@ def add_review(request, dealer_id):
             }
             response = post_request('https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/post-review', 
                                     json_payload, dealerId=dealer_id)
-    return HttpResponse(response)
-    # return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
 
