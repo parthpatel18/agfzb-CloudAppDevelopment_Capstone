@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
+from .models import CarModel, CarDealer, CarMake
 # from .restapis import related methods
-from .restapis import get_dealers_from_cf, get_dealer_by_state_from_cf, get_dealer_reviews_from_cf, get_dealer_by_id
+from .restapis import get_dealers_from_cf, get_dealer_by_state_from_cf, get_dealer_reviews_from_cf, get_dealer_by_id, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -39,6 +39,7 @@ def login_request(request):
         password = request.POST['password']
 
         user = authenticate(username=username, password=password)
+        print(user)
         if user is not None:
             login(request, user)
             return redirect('djangoapp:index')
@@ -154,5 +155,5 @@ def add_review(request, dealer_id):
             }
             response = post_request('https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/post-review', 
                                     json_payload, dealerId=dealer_id)
-            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+    return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
 
