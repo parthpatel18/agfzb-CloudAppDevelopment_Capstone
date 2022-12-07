@@ -81,7 +81,7 @@ def registration_request(request):
 def get_dealerships(request):
     context = {}
     if request.method == "GET":
-        url = "https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/get-dealership.json"
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/get-dealership"
         dealerships = get_dealers_from_cf(url)
         context['dealership_list'] = dealerships
         # dealer_names = ''.join([(dealer.short_name) for dealer in dealerships])
@@ -90,7 +90,7 @@ def get_dealerships(request):
 def get_dealerships_by_state(request, state):
     context = {}
     if request.method == "GET":
-        url = "https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/get-dealership.json"
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/get-dealership"
         dealerships = get_dealer_by_state_from_cf(url, state)
         dealer_names = ''.join([(dealer.short_name) for dealer in dealerships])
         return HttpResponse(dealer_names)
@@ -101,8 +101,7 @@ def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
         #dealer_details
-        url = "https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/get-dealership.json"
-        dealer_details = get_dealer_by_id(url, dealer_id)
+        dealer_details = get_dealer_by_id('https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/get-dealership', dealer_id)
         context['dealer'] = dealer_details
         #dealer_reviews
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/0de7ff62-e93c-4d44-8eb2-0187fc810083/dealership-package/get-review"
