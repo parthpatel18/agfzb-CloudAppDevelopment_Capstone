@@ -11,19 +11,20 @@
 
 </head>
     <body>
-        {% include 'djangoapp/navbar.html' with active_menu='' %}
-        <div class="container text-center">
-                
-            <h4 class='display-4 my-3 px-5'>Add a review about {{ dealer.full_name }}</h4>
-            
+        {% include 'djangoapp/nav_bar.html' with active_menu='' %}
+        <div class="container">    
+            <h4 class='display-5 my-3 px-5'>Add a review about {{ dealer.full_name }}</h4>
             <form action="{% url 'djangoapp:add_review' dealer.id %}" method="post">
                 {% csrf_token %}
-                <div class="form-group">
+                <div class="form-group container-fluid">
                     <label for="content"><b>Enter the review content:</b></label>
                     <textarea class="form-control mb-3" id="content" name="content" rows="2" required></textarea>
-                    <input class="form-check-input mb-3" type="checkbox" name="purchasecheck" id="purchasecheck">
-                    <label for="purchasecheck"><b>Has purchased the car from {{ dealer.full_name }}?</b>
-                     (select purchased car information below if checked)</label><br>
+                    <label for="purchasecheck">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input class="form-check-input mb-3" type="checkbox" name="purchasecheck" id="purchasecheck">
+                        <b>Has purchased the car from {{ dealer.full_name }}?</b>
+                        (select purchased car information below if checked)
+                    </label><br>
                     <label for="car"><b>Select your car (model-make-year):</b></label>
                     <select name="car" id="car" class="form-select mb-3">
                         {% for car in cars %}
