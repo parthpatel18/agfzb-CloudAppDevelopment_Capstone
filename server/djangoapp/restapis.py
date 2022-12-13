@@ -122,7 +122,7 @@ def get_dealer_reviews_from_cf(url, dealer_Id):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
 def analyze_review_sentiments(dealerreview):
-    json_result = get_request("https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/e983e9dd-40c9-4248-a519-ebc70870fa53",
+    json_result = get_request("https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/e983e9dd-40c9-4248-a519-ebc70870fa53/v1/analyze",
                             api_key = "080PM4gjE02s9RfY7BrRlWf_gK2p6LgiJIhlcZqW6WE0",
                             text = dealerreview, features = 'sentiment',
                             return_analyzed_text = False, version = '2022-08-10')
