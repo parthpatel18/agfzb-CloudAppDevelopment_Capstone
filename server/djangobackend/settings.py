@@ -27,9 +27,9 @@ DEBUG = True
 
 APPEND_SLASH = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django-unchained.eu-gb.cf.appdomain.cloud', "https://*.cf.appdomain.cloud/*", 'https://*.eu-gb.cf.appdomain.cloud', 'https://*.eu-gb.cf.appdomain.cloud', 'https://django-unchained.eu-gb.cf.appdomain.cloud/', 'https://parthpatel11-8000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/*', "https://parthpatel11-8000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"]
-CSRF_TRUSTED_ORIGINS = ["https://*.cf.appdomain.cloud/*", "https://parthpatel11-8000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai", "https://*.proxy.cognitiveclass.ai", "https://*.proxy.cognitiveclass.ai/*", 'https://*.127.0.0.1']
+ALLOWED_HOSTS = ['localhost', 'localhost:8000', 'https://parthpatel11-8000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai']
 
+CSRF_TRUSTED_ORIGINS = ['https://parthpatel11-8000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai']
 
 # Application definition
 
